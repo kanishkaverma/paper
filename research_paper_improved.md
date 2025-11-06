@@ -23,13 +23,7 @@ Understanding how data is protected at each step is crucial, as wearable devices
 
 ### 1.2 Why Privacy Matters in Wearable Health Devices
 
-Unlike most consumer electronics, wearable health devices collect continuous, highly personal data about our bodies. This data can reveal:
-- Medical conditions and health status
-- Daily routines and location patterns
-- Stress levels and emotional states
-- Sleep quality and habits
-
-If this data is stolen, leaked, or misused, it can lead to discrimination (e.g., by insurers or employers), identity theft, or serious privacy violations. Therefore, these devices require stronger security than typical consumer gadgets.
+Unlike most consumer electronics, wearable health devices collect continuous, highly personal data about our bodies. This data can reveal medical conditions and health status, daily routines and location patterns, stress levels and emotional states, and sleep quality and habits. If this data is stolen, leaked, or misused, it can lead to discrimination (e.g., by insurers or employers), identity theft, or serious privacy violations. Therefore, these devices require stronger security than typical consumer gadgets.
 
 ## 2. Understanding the Threats: What Can Go Wrong?
 
@@ -37,37 +31,19 @@ To design effective security, we must first understand the potential threats. Se
 
 ### 2.1 Types of Attackers
 
-**Passive Eavesdropper**
-- **Who:** Someone with basic radio equipment who can listen to wireless signals
-- **What they can do:** Intercept Bluetooth Low Energy (BLE) communications between your device and phone
-- **Why it matters:** Even if they can't change anything, they might see your health data being transmitted
+**Passive Eavesdropper:** This threat involves someone with basic radio equipment who can listen to wireless signals. Such attackers can intercept Bluetooth Low Energy (BLE) communications between your device and phone. This matters because even if they can't change anything, they might see your health data being transmitted.
 
-**Active Network Attacker (Man-in-the-Middle or MITM)**
-- **Who:** A more sophisticated attacker who can intercept and modify wireless communications
-- **What they can do:** Trick your device into using weak encryption, replay old commands, or inject false data
-- **Why it matters:** They could manipulate your health readings or gain control of device functions
+**Active Network Attacker (Man-in-the-Middle or MITM):** A more sophisticated attacker who can intercept and modify wireless communications presents a more serious threat. These attackers can trick your device into using weak encryption, replay old commands, or inject false data. This is concerning because they could manipulate your health readings or gain control of device functions.
 
-**Compromised Device Owner**
-- **Who:** Malware or malicious software that gains control of your wearable or smartphone
-- **What they can do:** Access all data stored on the device, extract encryption keys, and monitor everything
-- **Why it matters:** This represents complete local compromise, so we need hardware-level protections
+**Compromised Device Owner:** When malware or malicious software gains control of your wearable or smartphone, it can access all data stored on the device, extract encryption keys, and monitor everything. This represents complete local compromise, highlighting the need for hardware-level protections.
 
-**Malicious Researcher (Model Poisoning)**
-- **Who:** A bad actor participating in collaborative machine learning research
-- **What they can do:** Corrupt the shared AI models by submitting manipulated training data
-- **Why it matters:** Relevant for newer systems that use federated learning (explained later)
+**Malicious Researcher (Model Poisoning):** A bad actor participating in collaborative machine learning research poses unique risks by corrupting the shared AI models through submitting manipulated training data. This threat is particularly relevant for newer systems that use federated learning (explained later).
 
-**Manufacturer Insider or Supply Chain Attacker**
-- **Who:** Someone who tampers with devices before they reach customers
-- **What they can do:** Install backdoors in the firmware or weaken security measures
-- **Why it matters:** Even trusted brands can be compromised at the manufacturing stage
+**Manufacturer Insider or Supply Chain Attacker:** Someone who tampers with devices before they reach customers can install backdoors in the firmware or weaken security measures. This demonstrates that even trusted brands can be compromised at the manufacturing stage.
 
 ### 2.2 System Assumptions
 
-This analysis assumes:
-- Devices range from simple sensors with minimal computing power to sophisticated processors
-- Some devices include Trusted Execution Environments (TEE), special secure zones in the processor that protect sensitive operations even if the main system is compromised
-- Cloud servers are "honest-but-curious": they follow protocols correctly but might try to peek at user data if it isn't properly encrypted
+This analysis assumes devices range from simple sensors with minimal computing power to sophisticated processors. Some devices include Trusted Execution Environments (TEE), special secure zones in the processor that protect sensitive operations even if the main system is compromised. Additionally, cloud servers are assumed to be "honest-but-curious", meaning they follow protocols correctly but might try to peek at user data if it isn't properly encrypted.
 
 ## 3. Security Solutions: How Protection Has Evolved
 
@@ -75,65 +51,35 @@ This analysis assumes:
 
 **What it is:** Instead of sending raw health data directly to the cloud, modern wearables process data locally on the device first.
 
-**How it helps:**
-- Your raw heart rate data stays on your wrist; only processed insights (like "your average heart rate was 72 bpm") get transmitted
-- Less data traveling over the network means fewer opportunities for interception
-- Faster responses for time-sensitive health alerts
-
-**Example:** A smart ring might analyze your sleep patterns locally and only upload a summary report, rather than transmitting every heartbeat throughout the night.
+**How it helps:** This approach ensures your raw heart rate data stays on your wrist, with only processed insights (like "your average heart rate was 72 bpm") getting transmitted. Less data traveling over the network means fewer opportunities for interception, and the system provides faster responses for time-sensitive health alerts. For example, a smart ring might analyze your sleep patterns locally and only upload a summary report, rather than transmitting every heartbeat throughout the night.
 
 Edge computing has transformed healthcare by enabling real-time data processing at the device level, reducing latency and improving privacy. However, it also introduces challenges including limited computational resources on small devices and the need for efficient algorithms that can run on constrained hardware (Rancea et al., 2024).
 
 ### 3.2 Hardware Security Features
 
-**Trusted Execution Environments (TEE)**
-- **What it is:** A secure area inside the device's processor that's isolated from the main operating system
-- **How it helps:** Even if malware infects your device, the TEE keeps encryption keys and sensitive health data protected
-- **Real-world use:** Securely stores your health data and processes sensitive calculations without exposing them to potentially compromised apps
+**Trusted Execution Environments (TEE):** A secure area inside the device's processor that's isolated from the main operating system provides critical protection. Even if malware infects your device, the TEE keeps encryption keys and sensitive health data protected. In real-world use, the TEE securely stores your health data and processes sensitive calculations without exposing them to potentially compromised apps.
 
-**Hardware Root of Trust**
-- **What it is:** Security built into the device's hardware that can't be modified by software
-- **How it helps:** Ensures the device boots up safely and hasn't been tampered with
-- **Real-world use:** Verifies that only authentic, unmodified software runs on your health device
+**Hardware Root of Trust:** Security built into the device's hardware that can't be modified by software ensures the device boots up safely and hasn't been tampered with. This verifies that only authentic, unmodified software runs on your health device.
 
 ### 3.3 Privacy-Preserving Machine Learning
 
-Modern health devices use artificial intelligence to detect patterns and provide insights. However, traditional AI requires collecting everyone's data in one place (a privacy nightmare). New techniques address this:
+Modern health devices use artificial intelligence to detect patterns and provide insights. However, traditional AI requires collecting everyone's data in one place (a privacy nightmare). New techniques address this challenge.
 
-**Federated Learning**
-- **What it is:** Instead of sending your data to a central server, the AI model comes to your device
-- **How it works:**
-  1. Your device trains the AI model using only your local data
-  2. Only the updated model (not your data) is sent back to the server
-  3. The server combines updates from many users to improve the overall model
-  4. Your raw health data never leaves your device
-- **Privacy benefit:** The cloud never sees your actual health measurements, only mathematical model updates
+**Federated Learning:** Instead of sending your data to a central server, the AI model comes to your device. The process works as follows: your device trains the AI model using only your local data, then only the updated model (not your data) is sent back to the server. The server combines updates from many users to improve the overall model, and your raw health data never leaves your device. This provides a significant privacy benefit, as the cloud never sees your actual health measurements, only mathematical model updates.
 
-**Differential Privacy**
-- **What it is:** A mathematical technique that adds carefully calculated "noise" to data
-- **How it helps:** Even if someone sees the AI model updates, they can't reverse-engineer individual users' health data
-- **Trade-off:** Too much noise makes the AI less accurate; too little exposes privacy. Designers must find the right balance.
+**Differential Privacy:** This mathematical technique adds carefully calculated "noise" to data. Even if someone sees the AI model updates, they can't reverse-engineer individual users' health data. However, there is a trade-off: too much noise makes the AI less accurate, while too little exposes privacy. Designers must find the right balance.
 
-**Secure Aggregation**
-- **What it is:** A cryptographic method that allows combining data from multiple users without any single party (including the server) seeing individual contributions
-- **How it helps:** The server receives only the combined result, never individual updates
-- **Real-world use:** Enables population-level health insights without exposing anyone's personal data
+**Secure Aggregation:** A cryptographic method allows combining data from multiple users without any single party (including the server) seeing individual contributions. The server receives only the combined result, never individual updates. This enables population-level health insights without exposing anyone's personal data.
 
 ### 3.4 Wireless Communication Security
 
-Wearable devices typically use Bluetooth Low Energy (BLE) to communicate with smartphones. BLE security has improved significantly:
+Wearable devices typically use Bluetooth Low Energy (BLE) to communicate with smartphones. BLE security has improved significantly over time.
 
-**Early problems:**
-- Unencrypted data transmissions anyone nearby could intercept
-- Predictable pairing processes that attackers could exploit
-- Device identifiers that allowed long-term tracking of individuals
+**Early problems:** Initial implementations suffered from unencrypted data transmissions that anyone nearby could intercept, predictable pairing processes that attackers could exploit, and device identifiers that allowed long-term tracking of individuals.
 
-**Modern protections:**
-- BLE Secure Connections with strong encryption
-- Regularly changing device identifiers to prevent tracking
-- Authenticated pairing to prevent man-in-the-middle attacks
+**Modern protections:** Contemporary systems implement BLE Secure Connections with strong encryption, regularly changing device identifiers to prevent tracking, and authenticated pairing to prevent man-in-the-middle attacks.
 
-**Remaining challenges:** Research published in 2024 still finds vulnerabilities in how some devices rotate identifiers, potentially allowing tracking even with encryption enabled (Wu et al., 2024).
+**Remaining challenges:** Despite these improvements, research published in 2024 still finds vulnerabilities in how some devices rotate identifiers, potentially allowing tracking even with encryption enabled (Wu et al., 2024).
 
 ## 4. Evolution Timeline: How We Got Here
 
@@ -172,84 +118,39 @@ Despite significant progress, real-world security issues persist:
 
 ### 5.1 Bluetooth Low Energy Weaknesses
 
-Recent security audits reveal ongoing problems:
-- Some devices still transmit data without encryption
-- Weak identifier rotation allows tracking of individuals across time and location
-- Exposed diagnostic interfaces that attackers can exploit
-- Pairing vulnerabilities that enable man-in-the-middle attacks
-
-Research published in 2024 demonstrated practical attacks against popular health devices, including the ability to track users and drain device batteries remotely (Cook et al., 2024; Wu et al., 2024).
+Recent security audits reveal ongoing problems across several dimensions. Some devices still transmit data without encryption, while weak identifier rotation allows tracking of individuals across time and location. Exposed diagnostic interfaces provide attack vectors that adversaries can exploit, and pairing vulnerabilities enable man-in-the-middle attacks. Research published in 2024 demonstrated practical attacks against popular health devices, including the ability to track users and drain device batteries remotely (Cook et al., 2024; Wu et al., 2024).
 
 ### 5.2 Federated Learning Vulnerabilities
 
-While privacy-preserving in principle, federated learning systems face risks:
-- **Model inversion attacks:** Sophisticated attackers might extract information about training data from model updates
-- **Model poisoning:** Malicious participants can corrupt the AI model by submitting bad updates
-- **Weak validation:** If the system doesn't properly verify update integrity, these attacks become easier
+While privacy-preserving in principle, federated learning systems face several significant risks. Model inversion attacks allow sophisticated attackers to potentially extract information about training data from model updates. Model poisoning enables malicious participants to corrupt the AI model by submitting bad updates. Furthermore, weak validation in systems that don't properly verify update integrity makes these attacks easier to execute.
 
 ### 5.3 Device Management at Scale
 
-Managing thousands or millions of devices creates challenges:
-- Ensuring secure boot and safe software updates across diverse hardware
-- Distributing and rotating encryption keys efficiently
-- Balancing centralized control with individual privacy
+Managing thousands or millions of devices creates several challenges. Organizations must ensure secure boot and safe software updates across diverse hardware platforms, distribute and rotate encryption keys efficiently, and balance centralized control with individual privacy requirements.
 
 ## 6. Practical Considerations
 
 ### 6.1 Energy and Sustainability
 
-Battery life is critical for wearables. Security features must be energy-efficient:
-
-**Energy drains:**
-- Constant wireless transmission
-- Computationally expensive encryption
-- Frequent cloud synchronization
-
-**Energy-efficient approaches:**
-- Process data locally and send only summaries
-- Batch uploads instead of continuous streaming
-- Use lightweight cryptography designed for low-power devices
-- Adaptive sampling (collect detailed data only when needed)
-
-Recent studies show that poorly designed health apps can drain smartphone batteries significantly, highlighting the need for efficient privacy-preserving designs (Almasri et al., 2024).
+Battery life is critical for wearables, and security features must be energy-efficient to maintain usability. Several factors contribute to energy drain, including constant wireless transmission, computationally expensive encryption, and frequent cloud synchronization. To address these challenges, developers can adopt energy-efficient approaches such as processing data locally and sending only summaries, batching uploads instead of continuous streaming, using lightweight cryptography designed for low-power devices, and implementing adaptive sampling to collect detailed data only when needed. Recent studies show that poorly designed health apps can drain smartphone batteries significantly, highlighting the need for efficient privacy-preserving designs (Almasri et al., 2024).
 
 ### 6.2 Reliability and Updates
 
-Wearable health devices must remain functional and secure throughout their lifespan:
-
-**Key requirements:**
-- **Signed updates:** Only install software verified by the manufacturer
-- **Rollback protection:** Prevent downgrading to versions with known vulnerabilities
-- **Dual partition systems:** Keep a backup copy of working software in case updates fail
-- **Watchdog mechanisms:** Automatically recover if the device freezes or crashes
-
-Secure firmware updates and device management are critical for maintaining long-term security in wearable health devices, as vulnerabilities discovered post-deployment must be patched without compromising device integrity (Zhang et al., 2025).
+Wearable health devices must remain functional and secure throughout their lifespan, which requires several key capabilities. Signed updates ensure that only software verified by the manufacturer is installed. Rollback protection prevents downgrading to versions with known vulnerabilities. Dual partition systems keep a backup copy of working software in case updates fail. Watchdog mechanisms automatically recover if the device freezes or crashes. Secure firmware updates and device management are critical for maintaining long-term security in wearable health devices, as vulnerabilities discovered post-deployment must be patched without compromising device integrity (Zhang et al., 2025).
 
 ## 7. Future Directions
 
 ### 7.1 Federated Learning by Default
 
-Future systems will likely adopt privacy-preserving machine learning as the standard approach:
-- Configurable privacy budgets (users choose their privacy/utility trade-off)
-- Automatic secure aggregation for all collaborative learning
-- Privacy guarantees built into the architecture from day one
+Future systems will likely adopt privacy-preserving machine learning as the standard approach. This includes configurable privacy budgets that allow users to choose their privacy/utility trade-off, automatic secure aggregation for all collaborative learning, and privacy guarantees built into the architecture from day one.
 
 ### 7.2 Post-Quantum Cryptography
 
-Current encryption might be vulnerable to future quantum computers. Preparation includes:
-- **Hybrid cryptography:** Use both current and post-quantum algorithms during the transition
-- **Careful migration paths:** Ensure old and new devices can communicate securely
-- **Long-term planning:** Important for medical devices used for many years
-
-Research is already testing post-quantum algorithms for medical IoT systems (Ravisankar & Maheswar, 2025; Sabrina et al., 2024).
+Current encryption might be vulnerable to future quantum computers, requiring proactive preparation. Hybrid cryptography uses both current and post-quantum algorithms during the transition period. Careful migration paths ensure old and new devices can communicate securely. Long-term planning is particularly important for medical devices used for many years. Research is already testing post-quantum algorithms for medical IoT systems (Ravisankar & Maheswar, 2025; Sabrina et al., 2024).
 
 ### 7.3 Enhanced Attestation
 
-Future systems will verify more than just device identity:
-- Confirm the firmware version and security patch level
-- Validate the AI model version before accepting health data
-- Continuous runtime integrity checks
-- Only accept data from verifiably secure devices
+Future systems will verify more than just device identity. They will confirm the firmware version and security patch level, validate the AI model version before accepting health data, perform continuous runtime integrity checks, and only accept data from verifiably secure devices.
 
 ## 8. Ethical Considerations
 
@@ -257,22 +158,15 @@ Technical security alone doesn't address all ethical concerns surrounding wearab
 
 ### 8.1 Access and Equity
 
-- Vulnerable populations may lack access to secure devices or the knowledge to use privacy features
-- Cost of more secure devices may create a "privacy divide" between wealthy and poor
-- Language and literacy barriers may prevent understanding of privacy settings
+Vulnerable populations may lack access to secure devices or the knowledge to use privacy features effectively. The cost of more secure devices may create a "privacy divide" between wealthy and poor communities. Language and literacy barriers may prevent understanding of privacy settings, further exacerbating inequalities.
 
 ### 8.2 Autonomy and Consent
 
-- Users must have meaningful control over their health data
-- Consent should be granular (control different types of data separately)
-- Easy-to-understand explanations of how data is used
-- Simple ability to revoke consent and delete data
+Users must have meaningful control over their health data. Consent should be granular, allowing control over different types of data separately. Systems should provide easy-to-understand explanations of how data is used and a simple ability to revoke consent and delete data.
 
 ### 8.3 Surveillance and Freedom
 
-- Employer or insurance-mandated wearables may feel coercive
-- Constant health monitoring could reduce personal autonomy
-- Data aggregation might enable discrimination even if individual records are private
+Employer or insurance-mandated wearables may feel coercive, creating pressure to participate in health monitoring programs. Constant health monitoring could reduce personal autonomy and freedom. Data aggregation might enable discrimination even if individual records are kept private.
 
 Recent research emphasizes that technical solutions must be paired with strong governance, transparent policies, and user-centered design to address these ethical dimensions (Capulli et al., 2025; Sun et al., 2024; Sui et al., 2023).
 
@@ -282,46 +176,15 @@ For researchers and developers building wearable health systems, this checklist 
 
 ### 9.1 Core Security Practices
 
-1. **Implement secure boot and signed updates**
-   - Verify software authenticity before execution
-   - Protect against rollback to vulnerable versions
-   - Establish hardware root of trust where possible
-
-2. **Use remote attestation**
-   - Verify device integrity before accepting health data
-   - Log attestation events for audit purposes
-   - Reject data from devices that fail verification
-
-3. **Prefer on-device processing**
-   - Extract features and preprocess data locally
-   - Upload only processed insights, not raw biosignals
-   - Implement batched encrypted uploads to reduce transmission overhead
-
-4. **Adopt energy-aware security**
-   - Balance cryptographic strength with battery constraints
-   - Use adaptive sampling to reduce unnecessary data collection
-   - Optimize for both privacy and sustainability
-
-5. **Enable key rotation and management**
-   - Regularly update encryption keys
-   - Use hardware-protected key storage when available
-   - Plan for secure key distribution at scale
+First, developers should implement secure boot and signed updates. This involves verifying software authenticity before execution, protecting against rollback to vulnerable versions, and establishing hardware root of trust where possible. Second, use remote attestation to verify device integrity before accepting health data, log attestation events for audit purposes, and reject data from devices that fail verification. Third, prefer on-device processing by extracting features and preprocessing data locally, uploading only processed insights rather than raw biosignals, and implementing batched encrypted uploads to reduce transmission overhead. Fourth, adopt energy-aware security that balances cryptographic strength with battery constraints, uses adaptive sampling to reduce unnecessary data collection, and optimizes for both privacy and sustainability. Fifth, enable key rotation and management by regularly updating encryption keys, using hardware-protected key storage when available, and planning for secure key distribution at scale.
 
 ### 9.2 Research and Reproducibility
 
-To support scientific validation and reproducibility:
-
-1. **Document and share datasets** (or create synthetic equivalents that preserve privacy)
-2. **Publish training scripts and model architectures** for federated learning systems
-3. **Conduct small-scale experiments** to validate privacy/utility trade-offs before deployment
+To support scientific validation and reproducibility, researchers should document and share datasets (or create synthetic equivalents that preserve privacy), publish training scripts and model architectures for federated learning systems, and conduct small-scale experiments to validate privacy/utility trade-offs before deployment.
 
 ### 9.3 Suggested Experiments
 
-Future work could include these practical tests:
-
-1. **BLE linkability measurement:** Test consumer devices to quantify tracking risks under real-world conditions
-2. **TEE performance benchmarks:** Measure the overhead (memory, latency, energy) of using secure enclaves for on-device health AI
-3. **Federated learning pilot:** Simulate a collaborative learning system with real biosignal data to test privacy parameter tuning and resistance to poisoning attacks
+Future work could include several practical tests. BLE linkability measurement would test consumer devices to quantify tracking risks under real-world conditions. TEE performance benchmarks would measure the overhead (memory, latency, energy) of using secure enclaves for on-device health AI. A federated learning pilot could simulate a collaborative learning system with real biosignal data to test privacy parameter tuning and resistance to poisoning attacks.
 
 ## 10. Conclusion
 
