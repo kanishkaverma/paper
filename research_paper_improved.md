@@ -36,7 +36,7 @@ Security researchers categorize threats based on attacker capabilities:
 
 ### 2.2 System Assumptions
 
-Devices range from simple sensors to sophisticated processors. Some include Trusted Execution Environments (TEE)—secure processor zones protecting sensitive operations even when the main system is compromised. Cloud servers are assumed "honest-but-curious," following protocols correctly while potentially attempting to access unencrypted user data.
+Devices range from simple sensors to sophisticated processors. Some include Trusted Execution Environments (TEE), secure processor zones protecting sensitive operations even when the main system is compromised. Cloud servers are assumed "honest-but-curious," following protocols correctly while potentially attempting to access unencrypted user data.
 
 ## 3. Security Solutions: How Protection Has Evolved
 
