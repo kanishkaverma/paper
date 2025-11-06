@@ -106,6 +106,10 @@ Battery life is critical for wearables; security features must be energy-efficie
 
 Wearable devices require signed updates for manufacturer verification, rollback protection against vulnerable versions, dual partition systems for update failure recovery, and watchdog mechanisms for automatic crash recovery. Secure firmware updates are critical for patching post-deployment vulnerabilities without compromising device integrity (Zhang et al., 2025).
 
+### 6.3 Computing Systems Performance
+
+Wearable health devices present unique computing systems challenges due to their heterogeneous, distributed architectures. Advantages include distributed processing that enables workload sharing between wearable devices, smartphones, and cloud servers; scalability through tiered computing architectures that can accommodate growing user bases; and flexible resource allocation that adapts to varying computational demands. However, significant challenges arise from severe resource constraints on wearable processors, including limited memory (often under 256KB RAM), restricted processing power, and minimal storage capacity. System complexity increases as security mechanisms must operate across multiple computing tiers with different trust levels and capabilities. Furthermore, real-time processing requirements for health monitoring conflict with energy efficiency needs, creating difficult optimization trade-offs. The heterogeneous nature of IoMT deployments, where devices range from simple sensors to sophisticated processors, complicates system design and management at scale (Rancea et al., 2024; Zhang et al., 2025).
+
 ## 7. Future Directions
 
 ### 7.1 Federated Learning by Default
