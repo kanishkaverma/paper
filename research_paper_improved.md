@@ -82,6 +82,8 @@ This analysis assumes:
 
 **Example:** A smart ring might analyze your sleep patterns locally and only upload a summary report, rather than transmitting every heartbeat throughout the night.
 
+Edge computing has transformed healthcare by enabling real-time data processing at the device level, reducing latency and improving privacy. However, it also introduces challenges including limited computational resources on small devices and the need for efficient algorithms that can run on constrained hardware (Rancea et al., 2024).
+
 ### 3.2 Hardware Security Features
 
 **Trusted Execution Environments (TEE)**
@@ -220,6 +222,8 @@ Wearable health devices must remain functional and secure throughout their lifes
 - **Rollback protection:** Prevent downgrading to versions with known vulnerabilities
 - **Dual partition systems:** Keep a backup copy of working software in case updates fail
 - **Watchdog mechanisms:** Automatically recover if the device freezes or crashes
+
+Secure firmware updates and device management are critical for maintaining long-term security in wearable health devices, as vulnerabilities discovered post-deployment must be patched without compromising device integrity (Zhang et al., 2025).
 
 ## 7. Future Directions
 
